@@ -1,0 +1,90 @@
+//        加载联系人列表
+//        ContactsTool ct=new ContactsTool(this,this);
+
+//        mListView = (ListView) this.findViewById(R.id.lv_contracts);
+////        loadContacts();
+////        cursor= getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
+////                PHONES_PROJECTION, null, null, null);
+//         cursor = getContentResolver().query(
+//                ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null, null, null, null);// ContactsContract.Contacts.CONTENT_URI
+//        if (cursor != null) {  startManagingCursor(cursor);  }
+//        ListAdapter adapter = new SimpleCursorAdapter(this,
+//                R.layout.item_phonecontact_list, cursor,
+////                ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME, ContactsContract.CommonDataKinds.Phone.NUMBER
+//                new String[]{ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME, ContactsContract.CommonDataKinds.Phone.NUMBER},//,ContactsContract.PhoneLookup.DISPLAY_NAME
+//                new int[]{R.id.contact_user,R.id.contact_phone});
+//        mListView.setAdapter(adapter);
+
+
+
+
+  /** 联系人名称 **/
+//    private ArrayList<Contact> mContacts = new ArrayList<Contact>();
+    //    /** 联系人号码 **/
+//     private ArrayList<String> mContactsNumber = new ArrayList<String>();
+//    /** 联系人头像 **/
+//    private ArrayList<Bitmap> mContactsPhonto = new ArrayList<Bitmap>();
+    private static final String[] PHONES_PROJECTION = new String[] {
+//            Phone.DISPLAY_NAME, Phone.NUMBER, Phone.PHOTO_ID,Phone.CONTACT_ID };
+            ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME, ContactsContract.CommonDataKinds.Phone.NUMBER };
+    /**联系人显示名称**/
+    private static final int PHONES_DISPLAY_NAME_INDEX = 0;
+    /**电话号码**/
+    private static final int PHONES_NUMBER_INDEX = 1;
+    /**头像ID**/
+//    private static final int PHONES_PHOTO_ID_INDEX = 2;
+//    /**联系人的ID**/
+//    private static final int PHONES_CONTACT_ID_INDEX = 3;
+
+    public ArrayList<Contact> getPhoneContacts(Context mContext) {
+
+        Log.i("ContactsTool","获取到的联系人列表为：：：：2000");
+        ArrayList<Contact> mContacts = new ArrayList<Contact>();
+        ContentResolver resolver = mContext.getContentResolver();
+        // 获取手机联系人
+        Cursor phoneCursor = resolver.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
+                PHONES_PROJECTION, null, null, null);
+        if (phoneCursor != null) {
+            while (phoneCursor.moveToNext()) {
+                // 得到手机号码
+                String phoneNumber = phoneCursor.getString(PHONES_NUMBER_INDEX);
+                // 当手机号码为空的或者为空字段 跳过当前循环
+                if (TextUtils.isEmpty(phoneNumber))
+                    continue;
+                // 得到联系人名称
+                String contactName = phoneCursor.getString(PHONES_DISPLAY_NAME_INDEX);
+////                 得到联系人ID
+//                Long contactid = phoneCursor.getLong(PHONES_CONTACT_ID_INDEX);
+//                // 得到联系人头像ID
+//                Long photoid = phoneCursor.getLong(PHONES_PHOTO_ID_INDEX);
+//                // 得到联系人头像Bitamp
+//                Bitmap contactPhoto = null;
+//
+//                // photoid 大于0 表示联系人有头像 如果没有给此人设置头像则给他一个默认的
+//                if (photoid > 0) {
+//                    Uri uri = ContentUris.withAppendedId(
+//                            ContactsContract.Contacts.CONTENT_URI, contactid);
+//                    InputStream input = ContactsContract.Contacts
+//                            .openContactPhotoInputStream(resolver, uri);
+//                    contactPhoto = BitmapFactory.decodeStream(input);
+//                } else {
+//                    contactPhoto = BitmapFactory.decodeResource(getResources(),
+//                            R.drawable.ic_launcher);
+//                }
+//                mContactsName.add(contactName);
+//                mContactsNumber.add(phoneNumber);
+//                mContactsPhonto.add(contactPhoto);
+
+                Contact temp=new Contact();
+                temp.setContactName(contactName);
+                temp.setPhoneNumber(phoneNumber);
+                mContacts.add(temp);
+
+
+//                Log.i("ContactsTool","获取到的联系人列表为：：：：2000"+contactName);
+            }
+            phoneCursor.close();
+//            System.out.print("获取到的联系人列表为：：：："+mContactsNumber);
+//            cts.loadContacts(mContacts);
+        }
+        return   mContacts;

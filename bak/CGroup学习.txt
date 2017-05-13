@@ -1,0 +1,541 @@
+ CGroup学习
+
+Cgroup是什么？作用
+是Linux系统中限制、隔离以及记录进程组中所占用物理资源的一种机制，实现将任意进程进行分组化管理。
+CGroup中用控制内存的memory控制器，控制进程调度的cpu调度器。
+
+
+概念：
+Task： 一个进程
+Control group 控制族群，按照某种标准划分的进程组。
+Hierarchy 层级，control group可以形成树形结构，有父节点，子节点，每个节点都是一个control group，子节点继承父节点的特定属性。
+Subsystem 子系统。就是资源控制器，每个子系统就是一个资源的分配器。
+ 是用lssubsys –al 可以列出系统支持多少种子系统
+
+安装cgroup：
+apt-get install cgroup-bin
+
+查看CGroup配置文件:
+cat /etc/cgconfig,conf
+ 
+看到memory子系统是挂载在目录/sys/fs/cgroup/memory下
+进入这个目录
+创建一个文件夹，就创建了一个control group了
+mkdir test
+发现test目录下自动创建了许多文件：
+于是，限制内存使用我们就可以设置memory.limit_in_bytes
+ 
+将一个进程加入到这个test中
+echo $$ > tasks
+这样就将当前这个终端进程加入到了内存限制的cgroup中了。
+将这个cgroup删除只要删除目录就行了
+rmdir test
+
+ 
+
+
+
+2016 05 06 
+
+
+      @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            System.out.println("getView " + position + " " + convertView);
+            ViewHolder holder = null;
+            if (convertView == null) {
+                convertView = mInflater.inflate(R.layout.item1, null);
+                holder = new ViewHolder();
+                holder.textView = (TextView)convertView.findViewById(R.id.text);
+                convertView.setTag(holder);
+            } else {
+                holder = (ViewHolder)convertView.getTag();
+            }
+            holder.textView.setText(mData.get(position));
+            return convertView;
+        }
+        
+        
+        
+        
+        
+        
+        
+        
+//2016 05 09
+       点击item的动画效果
+       
+       <?xml version="1.0" encoding="utf-8" ?>
+       <selector xmlns:android="http://schemas.android.com/apk/res/android" >
+           <item android:drawable="@drawable/card_light_press" android:state_pressed="true"> 
+           </item>
+           <item android:drawable="@drawable/card_light" > 
+           </item>
+       </selector>
+       
+       
+       
+/////////////////////// card_light_press
+       <?xml version="1.0" encoding="utf-8"?>
+        <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+            <item>
+                <shape android:shape="rectangle">
+                    <solid android:color="#10000000"/>
+                    <corners android:radius="6dp"/>
+                </shape>
+            </item>
+        
+            <item android:bottom="2dp">
+                <shape android:shape="rectangle">
+                    <solid android:color="#e0e0e0"/>
+                    <corners android:radius="3dp"/>
+                </shape>
+        
+            </item>
+        </layer-list>
+         
+        
+////////////////////////card_light
+       
+        <?xml version="1.0" encoding="utf-8"?>
+        <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+            <item>
+                <shape android:shape="rectangle">
+                    <solid android:color="#10000000"/>
+                    <corners android:radius="6dp"/>
+                </shape>
+            </item> 
+            <item android:bottom="2dp">
+                <shape android:shape="rectangle">
+                    <solid android:color="#ffffff"/>
+                    <corners android:radius="3dp"/>
+                </shape>
+        
+            </item>
+        </layer-list>
+        
+ 
+ 1、QAAT 工具用于从海量log中提取有用信息
+需要将QAAT-ProGuard.jar及Run-QAAT-ProGuard.bat放到提取到的mtklog文件目录中，点击Run-QAAT-ProGuard.bat运行，生成txt文件。
+
+2、如何获得log日志
+打开手机，输入 *#*#9646633#*#*  进入工程模式。然后 抓取log日志，，存放在SD卡的mtklog文件中
+
+3、内存分析
+可以通过eclipse导出hrof文件，运行eclipsec.exe，打开刚才的输出文件进行分析
+
+
+4、GAT是一个图形界面的出错分析工具。可以进行日志抓取分析，打开Window->open LogViewer或MediatekLogView.bat，可以分析数据库
+       
+       
+       
+       
+       
+       
+       
+       
+2016 05 10    http://gityuan.com/2015/08/10/android-arch-coding-style/
+
+命名规范
+1. 包命名        
+com.domain.xxx.activity  //用户界面中所有的Activity类
+com.domain.xxx.fragment  //界面中所有的Fragment类
+com.domain.xxx.adapter   //界面中所有的Adapter类（适配器类）
+com.domain.xxx.view      //自定义的View类
+com.domain.xxx.service   //后台Service类
+com.domain.xxx.util      //项目中常用的公共工具类（网络, IO, 日志等）
+com.domain.xxx.bean      //实体模型类
+com.domain.xxx.db        //数据库操作相关的类
+com.domain.xxx.config    //所有的配置相关的类
+com.domain.xxx.api       //网络api接口相关de 类
+
+2. 类命名
+class LoginActivity;     //activity类
+class DiscoverFragment;  //fragment类
+class AnalysisService;   //service类
+class WakeupRankAdapter; //adapter类
+class StringUtils;       //工具类
+class UserBean;          //模型类
+class ApiImpl;           //接口实现类
+
+ 3.接口命名
+ interface Comparable;  
+interface Accessible;
+interface OnClickListener;
+
+4. 方法
+方法名	描述
+getXX()	获取某个属性的返回值
+setXX()	设置某个属性值
+initXX()	初始化方法，如初始化布局initView()
+isXX()	判断是否true的方法；
+checkXX()	与isXX意义等价
+processXX()	处理数据
+updateXX()	更新数据
+saveXX()	保存数据
+addXX()	添加数据
+deleteXX()	删除数据
+resetXX()	重置数据
+clearXX()	清除数据
+removeXX()	移除数据或者视图等，如removeView();
+drawXX()	绘制数据或者视图
+
+ 5. 变量
+private int userName;  //java的一般性风格
+private int mUserName; //google的成员变量风格，m为member的缩写
+
+6. 常量
+规则：常量使用全大写字母加下划线的方式命名。
+
+public static final int TAG= "tag";
+public static final int START_CLASS_NOT_FOUND = -2;
+下面介绍的与android关系更加紧密：
+
+7. 控件变量名
+规则：首先需要满足第5条变量的规则， 模式：逻辑名 + view缩写
+
+Button sendNewsBtn;
+TextView passwordTxt;
+8. 控件ID
+规则：view缩写_模块名_逻辑名
+
+android:id="@+id/btn_news_send"  //样例
+
+9. 资源文件名
+9.1 layout的文件命名
+规则：全部小写，采用下划线命名法。layout文件命名：组件类型_{模块_}功能.xml
+
+activity_news_title.xml //样例
+命名规范	组件类型
+activity_{模块_}功能	Activity命名格式
+fragment_{模块_}功能	Fragment命名格式
+dialog_{模块_}功能	Dialog命名格式
+popup_{模块_}功能	PopupWindow命名格式
+item_list_{模块_}功能	ListView的item命名格式
+item_grid_{模块_}功能	GridView的item命名格式
+
+
+9.2 drawable的文件命名
+模式：前缀{_控件}{_范围}{_后缀}，控件、范围、后缀可选
+
+bg_login_pressed.png //样例
+drawable	命名细则
+图标类	添加ic前缀
+背景类	添加bg前缀
+分隔类	添加div前缀
+默认类	添加def前缀
+区分状态时，默认状态	添加normal后缀
+区分状态时，按下时的状态	添加pressed后缀
+区分状态时，选中时的状态	添加selected后缀
+区分状态时，不可用时的状态	添加disable后缀
+多种状态的	添加selector后缀
+
+9.3 动画的文件命名
+规则：{范围_}动画类型_动画方向。
+
+login_fade_in.xml //样例
+动画命名	描述
+fade_in	淡入
+fade_out	淡出
+push_down_in	从下方推入
+push_down_out	从下方推出
+slide_in_from_top	从头部滑动进入
+zoom_enter	变形进入
+shrink_to_middle	中间缩小
+10. 资源内的name命名
+10.1 strings.xml
+模式：activity名_{范围_}逻辑名
+
+<string name="login_username">用户名</string> //样例
+10.2 colors.xml
+模式：前缀{_控件}{_范围}{_后缀}， 控件、范围、后缀可选，
+
+<color name="bg_login">#FFFFFF</color> //样例
+colors	命名细则
+背景颜色	添加bg前缀
+文本颜色	添加text前缀
+分割线颜色	添加div前缀
+区分状态时，默认状态的颜色	添加normal后缀
+区分状态时，按下时的颜色	添加pressed后缀
+区分状态时，选中时的颜色	添加selected后缀
+区分状态时，不可用时的颜色	添加disable后缀
+代码风格
+原则
+不要直接忽略Exceptions
+例如下面的示例，永远不要这样做，无法预测未来可能的变化
+  void setServerPort(String value) {  
+      try {  
+          serverPort = Integer.parseInt(value);  
+      } catch (NumberFormatException e) { }  
+  }  
+正确的做法应该如下：
+  void setServerPort(String value) throws ConfigurationException {
+      try {
+          serverPort = Integer.parseInt(value);
+      } catch (NumberFormatException e) {
+          throw new ConfigurationException("Port " + value + " is not valid.");
+      }
+  }
+import采用完全限定名
+不提倡：
+  import foo.*;   
+正确做法：
+  import foo.Bar;  
+括号风格：
+不提倡：
+  if (condition)
+      body(); 
+正确做法：
+  if (condition) {
+      body(); 
+  }
+使用空格来缩进
+使用4个空格缩进来代表块，而绝不使用tab键；
+使用8个空格来代表行包裹，包括函数调用。
+注释
+1.类注释 每个类完成后应该有作者姓名和联系方式的注释，对自己的代码负责
+/** * 作者: yuanhh * 时间: 13-12-20 19：25 * 描述: 用户登录 * 联系方式: yuanhuihui208@163.com */ public class Login{ … }
+2.方法注释 每一个成员方法（包括自定义成员方法、覆盖方法、属性方法）的方法头都必须做方法头注释
+/* * 方法名： * 功 能： * 参 数： * 返回值：无 */
+3.快注释
+private class MessageObserver extends ContentObserver { public MessageObserver() { super(mainHandler); }
+  public void onChange(boolean hasChanged) {
+   // 发送更新UI的消息
+   mHandler.sendMessage(mHandler.obtainMessage(0x2));
+  }   }
+4.资源文件注释
+#FF0000
+#0079FF
+
+
+
+
+一、代码优化
+
+优势：平时常说BroadcastReceiver，采用的是Binder通信方式，这是跨进程的通信方式，系统资源消耗固然更多。而广播LocalBroadcastManager，采用的是Handler通信机制，Handler的实现是应用内的通信方式，所以效率与安全性都更高。
+1、广播
+创建广播接收者：
+
+//广播类型
+public static final String ACTION_SEND="1";
+\\\\\
+
+//自定义广播
+public class AppBraoadcastReceiver extends BroadcastReceiver{
+
+ @override
+ public void onReceive(Context context,Intent intent){
+ //TODO
+ }  
+}
+ 
+ 
+ //创建广播接收者
+ AppBraoadcastReceiver appReceiver=new AppBraoadcastReceiver();
+ 
+ //注册广播
+ LocalBroadcastManager.getInstance(context).registerReceiver(appReceiver,new IntentFilter(ACTION_SEND));
+ 
+ //发送广播 
+LocalBroadcastManager.getInstance(context).sendBroadcast(new Intent(ACTION_SEND));
+
+//取消广播
+LocalBroadcastManager.getInstance(context).unregisterReceiver(appReceiver);
+
+
+2.线程池
+
+线程创建优先采用线程池ThreadPoolExecutor，而不是new Thread()
+优势： 通过new Thread()来创建线程是比较常用的方式，而使用线程池的方式有不少优势如下 
+线程可重复利用，节省线程的创建与销毁开销，性能有所提升；
+方便控制并发线程数，提高资源的利用率，减少过多的资源竞争；
+
+
+用法：
+//创建Runnable对象
+Runnable runnable=new Runnable(){
+      @Override
+        public void run() {
+            android.os.Process.setThreadPriority(android.os.Process.THREAD_PRIORITY_BACKGROUND);
+            //TODO
+        }
+     }
+
+
+//创建线程池
+ExecutorService threadPoolExecutor = new ThreadPoolExecutor(
+              	corePoolSize, maximumPoolSize, 
+	keepAliveTime, unit, workQueue);
+	//执行runnable
+threadPoolExecutor.execute(runnable);
+	
+	对于corePoolSize，一般往往可以设置为Runtime.getRuntime().availableProcessors()，代表当前系统活跃的CPU个数。
+对于corePoolSize，一般往往可以设置为Runtime.getRuntime().availableProcessors()，代表当前系统活跃的CPU个数。
+
+
+另外系统采用工厂模式，通过设置ThreadPoolExecutor的不同参数，提供四种默认线程池： 
+(1) newCachedThreadPool
+可缓存线程池，若线程空闲60s则回收，若无空闲线程可无限创建新线程，定义如下： new ThreadPoolExecutor(0, Integer.MAX_VALUE, 60L, TimeUnit.SECONDS, new SynchronousQueue<Runnable>());
+
+调用方法：
+
+ExecutorService cachedThreadPool = Executors.newCachedThreadPool();
+cachedThreadPool.execute(runnable);
+(2) newFixedThreadPool 定长线程，固定线程池大小，定义如下： new ThreadPoolExecutor(nThreads, nThreads, 0L, TimeUnit.MILLISECONDS, new LinkedBlockingQueue<Runnable>());
+
+调用方法：
+
+ExecutorService fixedThreadPool = Executors.newFixedThreadPool(nThreads);
+fixedThreadPool.execute(runnable);
+(3) newSingleThreadExecutor 
+只有一个线程的线程池，定义如下： new FinalizableDelegatedExecutorService (new ThreadPoolExecutor(1, 1, 0L, TimeUnit.MILLISECONDS, new LinkedBlockingQueue<Runnable>()));
+
+调用方法：
+
+ExecutorService singleThreadPool = Executors.newSingleThreadExecutor();
+newSingleThreadExecutor.execute(runnable);
+(4) newScheduledThreadPool
+可定时周期执行的线程池，定义如下： new ThreadPoolExecutor(corePoolSize, Integer.MAX_VALUE, 0, NANOSECONDS, new DelayedWorkQueue());
+
+调用方法：
+
+ExecutorService scheduledThreadPool = Executors.newScheduledThreadPool(corePoolSize);
+scheduledThreadPool.schedule(runnable, delay, TimeUnit.SECONDS);
+
+
+
+
+Environment 常用方法： 
+
+* 方法：getDataDirectory()
+解释：返回 File ，获取 Android 数据目录。
+* 方法：getDownloadCacheDirectory()
+解释：返回 File ，获取 Android 下载/缓存内容目录。
+* 方法：getExternalStorageDirectory()
+解释：返回 File ，获取外部存储目录即 SDCard
+* 方法：getExternalStoragePublicDirectory(String type)
+解释：返回 File ，取一个高端的公用的外部存储器目录来摆放某些类型的文件
+* 方法：getExternalStorageState()
+解释：返回 File ，获取外部存储设备的当前状态
+* 方法：getRootDirectory()
+解释：返回 File ，获取 Android 的根目录
+
+
+public void getSDPath(){ 
+File sdDir = null; 
+File sdDir1 = null;
+File sdDir2 = null;
+boolean sdCardExist = Environment.getExternalStorageState() 
+.equals(android.os.Environment.MEDIA_MOUNTED); //判断sd卡是否存在 
+if (sdCardExist) 
+{ 
+sdDir = Environment.getExternalStorageDirectory();//获取跟目录 
+sdDir1 = Environment.getDataDirectory();
+sdDir2 =Environment.getRootDirectory();
+} 
+System.out.println("getExternalStorageDirectory(): "+sdDir.toString()); 
+System.out.println("getDataDirectory(): "+sdDir1.toString()); 
+System.out.println("getRootDirectory(): "+sdDir2.toString()); 
+} 
+
+
+
+//判断一个路径下的文件（文件夹）是否存在
+
+public class IsExist {
+public static void main(String[] args) {
+isExist("e://12");
+}
+/**
+* 
+* @param path 文件夹路径
+*/
+public static void isExist(String path) {
+File file = new File(path);
+//判断文件夹是否存在,如果不存在则创建文件夹
+if (!file.exists()) {
+file.mkdir();
+}
+}
+}
+
+1.在SD卡上创建一个文件夹
+public class make extends Activity { 
+/** Called when the activity is first created. */ 
+@Override 
+public void onCreate(Bundle savedInstanceState) { 
+super.onCreate(savedInstanceState); 
+setContentView(R.layout.main); 
+File sd=Environment.getExternalStorageDirectory(); 
+String path=sd.getPath()+"/notes"; 
+File file=new File(path); 
+if(!file.exists()) 
+file.mkdir(); 
+
+}
+http://blog.csdn.net/roserose0002/article/details/8080495
+  mStorageManager = (StorageManager)mContext.getSystemService(Activity.STORAGE_SERVICE); 
+        try { 
+            mMethodGetPaths = mStorageManager.getClass().getMethod("getVolumePaths");  
+            paths = (String[]) mMethodGetPaths.invoke(mStorageManager); 
+            if(paths!=null){
+                for(int i=0;i<paths.length;i++){
+                    Log.d(TAG, " SDCARD_PATH:::::::=" + paths[i]); 
+                    scanApkFile(paths[i], group, callBack); 
+                }
+            } 
+        } catch (Exception e) { 
+            e.printStackTrace(); 
+            Log.d(TAG, " SDCARD_PATH error " + e.toString()); 
+        } 
+
+
+
+2016 05 13
+ 是用AIDL，分为服务端和客户端。
+ 服务端： 服务端需要创建一个Service用来监听客户端的连接请求，然后需要创建一个AIDL文件，在AIDL文件中声明暴露给客户端的接口，
+ 最后Service实现这个AIDL接口即可。
+ 
+ 客户端： 客户端需要绑定服务端的Service，绑定成功后，将服务端返回的Binder对象转成AIDL接口所属的类型，接着就可以调用AIDL中的
+ 方法了。
+ 
+ 3、AIDL接口的创建
+ 
+ 创建后缀名为AIDL的文件，在里面声明一个接口以及接口的方法。
+ 
+ demo：
+//IBookManager.aidl
+package com.ryg.chapter.aidl
+import ....
+
+interface IBookManager {
+   List<Book> getBookList();
+   void addBook(in Book book);
+   }
+
+//
+如果上面的类中Book实现了Praceble接口，
+那么需要创建一个和Book同名的AIDL文件，并在文件中声明它为Parcebale类型。如：
+Book.aidl
+package com.....
+parcelable Book;
+
+在AIDL中，每个实现了Parcelable接口的类都需要按照上面的那种方式去创建相应的AIDL文件并声明那个类为
+paracelable。
+ 除此之外，AIDL中除了基本数据类型，其他类型的参数必须标上方向： in 、out或者inout。in表示输入型参数。out表示
+ 输出型参数，inout表示输入输出型参数。
+ AIDL接口中只支持方法，不支持声明静态常量，这一点区别于传统的接口。
+ 建议：为了方便开发，建议把所有和AIDL相关的类和文件全部放入同一个包中。 
+ 
+ 
+ RemoteCallbackList 是系统专门提供的用于删除跨进程listener的接口，RemoteCallbackList是一个泛型，支持管理任意的AIDL
+ 接口，这点从他的声明中就可以看出，AIDL的接口继承自IInterface接口，
+ public class RemoteCallbackList<E extends IInterface>
+ 
+
+
+
+
+有位文豪说得好：“看一个作家的水平，不是看他发表了多少文字，而要看他的废纸篓里扔掉了多少。” 我觉得同样的理论适用于编程。好的程序员，他们删掉的代码比留下来的还要多很多。如果你看见一个人写了很多代码，却没有删掉多少，那他的代码一定有很多垃圾。
+
+
+
