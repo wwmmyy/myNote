@@ -175,28 +175,204 @@ result = pfun(5,12);
 
 -----------------
 
-int sum(int,int);
-int product(int,int);
-int defferent(int,int);
+	int sum(int,int);
+	int product(int,int);
+	int defferent(int,int);
+	
+	int main(void){
+	
+		int (*pfun)(int,int);
+		
+		pfun = sum;
+		result = pfun(a,b);
+		
+		pfun =product;
+		result = pfun(a,b);		
+		
+		pfun =defferent;
+		result = pfun(a,b);
+		
+		return 0;	
+	}
+	
+	int sum(int x,int y)
+	{
+		return x+y;
+	}
 
-int main(void){
+冒泡排序：：：
+# include <stdio.h>
+void sort(int * a,int len ){
+	for(int i=0;i<len-1;i++){
 
-int (*pfun)(int,int);
+		int t;
+		for(int j=0;j<len-i-1;j++){
+			if(a[j]>a[j+1]){
 
-pfun = sum;
-result = pfun(a,b);
+				t=a[j+1];
+				a[j+1]=a[j];
+				a[j]=t;
+			}
+		}
+	}
 
-pfun =product;
-result = pfun(a,b);
+}
+ 
+/*void sort(int * a, int len)
+{
+	int i, j, t;
 
+	for (i=0; i<len-1; ++i)
+	{
+		for (j=0; j<len-1-i; ++j)
+		{
+			if (a[j] > a[j+1])   
+			{
+				t = a[j];
+				a[j] = a[j+1];
+				a[j+1] = t; 
+			}
+		}
+	}
+}*/
 
+int main(void)
+{
+	int a[6] = {10, 2, 8, -8, 11, 0};
+	int i = 0;
 
+	sort(a, 6);
 
+	for (i=0; i<6; ++i)
+	{
+		printf("%d ", a[i]);
+	}
+	printf("\n");
+
+	return 0;
 }
 
 
 
 
+***************************************
+
+	# include <stdio.h>
+	# include <string.h>
+	
+	struct Student
+	{
+		int age;
+		char sex;
+		char name[100];
+	}; //分号不能省
+	
+	void InputStudent(struct Student *);
+	void OutputStudent(struct Student *);
+	int main(void)
+	{
+		struct Student st ;  //15行
+		//printf("%d\n", sizeof(st));
+	
+		InputStudent(&st); //对结构体变量输入  必须发送st的地址
+		OutputStudent(&st); //对结构体变量输出  可以发送st的地址也可以直接发送st的内容 但为了减少内存的耗费，也为了提高执行速度，推荐发送地址
+	
+		return 0;
+	}
+	
+	void OutputStudent(struct Student *pst)
+	{
+		printf("%d %c %s\n", pst->age, pst->sex, pst->name);
+	}
+	
+	void InputStudent(struct Student * pstu) //pstu只占4个字节
+	{
+		(*pstu).age = 10;
+		strcpy(pstu->name, "张三");
+		pstu->sex = 'F';	
+	}
+	
+	/*
+	//本函数无法修改主函数15行st的值 所以本函数是错误的
+	void InputStudent(struct Student stu)
+	{
+		stu.age = 10;
+		strcpy(stu.name, "张三");  //不能写成 stu.name = "张三";
+		stu.sex = 'F';
+	}
+	*/
+
+************************************
+enum：
+# include <stdio.h>
+
+//只定义了一个数据类型，并没有定义变量， 该数据类型的名字是 enum WeekDay 
+enum WeekDay
+{
+	MonDay, TuesDay, WednesDay, ThursDay, FriDay, SaturDay, SunDay
+};
+
+int main(void)
+{
+	//int day; //day定义成int类型不合适
+	enum WeekDay day = SunDay;
+	printf("%d\n", day);   
+	return 0;
+}
+
+*************************************88
+指针：：：：：
+
+	#define _CRT_SECURE_NO_WARNINGS
+	# include <stdio.h>  
+	# include <string.h>  
+	# include <stdlib.h>  
+	# include <stdio.h>
+	# include <malloc.h> 
+	
+	#define LEN 20  
+	typedef struct person
+	{
+		char name[LEN];
+		int  age;
+	}person;
+	
+	// 返回0表示失败，返回1表示成功  
+	int mallocAndInit(person **ppPs)
+	{
+		*ppPs = (person*)malloc(sizeof(person));
+		if (NULL == *ppPs)
+		{
+			// 内存分配失败  
+			fprintf(stderr, "Malloc failed.\n");
+			return 0;
+		}
+		// 初始化  
+		(*ppPs)->age = 0;
+		strcpy((*ppPs)->name, "");
+		return 1;
+	}
+	
+	void main()
+	{
+		person *pTest = NULL;
+		person **pptest = &pTest;   // 二级指针要指向准备使用的一级指针！！！  
+		// 这里通过二级指针获取到了函数内部为一级指针分配的内存，即改变了一级指针的地址  
+		if (!mallocAndInit(pptest))
+		{
+			fprintf(stderr, "Error.\n");
+			exit(1);
+		}
+		// 这里不会再出错  
+		printf("The person's name is %s, age is %d.\n", pTest->name, pTest->age);
+		// 释放内存并还原  
+		if (pTest != NULL)
+		{
+			free(pTest);
+			pTest = NULL;
+			pptest = NULL;
+		}
+	}
 
 
 
