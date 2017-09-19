@@ -375,30 +375,215 @@ int main(void)
 	}
 
 
+6、申请堆空间：
+new和delete代替malloc和free，是书写更加流畅，尤其申请堆内数组更直观。
+例如：
+a)申请1个普通变量 int *p = new int;  delete p;
+b)申请数组 int *p = new int[10];  delete []p;
+c)申请结构体对象：SData * p = new SData; delete p;
+d)申请结构体数组：SData * p = new SData[20]; delete []p;
+e)申请指针数组：SData* *p[100] = SData* [20]; delete[]p;
+Demo::
+///:::::申请一个数组
+#define _CRT_SECURE_NO_WARNINGS
+#include <iostream>   
+using namespace std;
+
+struct sData
+{
+ int nNumb;
+char sName[20];
+float fMatch;
+}
+
+int main()
+{
+	/*sData * p=new sData;
+	p->nNumb = 1009;
+	strcpy(p->sName,"aaaaa");
+	p->fMah =89.4f;
+	delete p;*/
+
+	sData * p=new sData[20];
+	p[0].nNumb = 1032;
+	strcpy(p[0]->sName,"aaaaa");
+	p[0]->fMah =89.4f;
+	delete []p;
+
+	return;
+}
+
+/*
+int main(){
+	int a[10] = {1,2,3,4,5,6,7,8,9,0};
+	int i=0;
+	int *p = (int*)malloc(sizeof(int)*10);
+	int i=0;
+	int *p = (int*)malloc(sizeof(int)*10);
+	int *p =new int[10];
+	
+	while(i<_countof(a)){
+	  p[i] = a[i++];
+	}
+	
+	while(i<_countof(a)){
+	  p[i] = a[i++];
+	 cout<< p[i++]<<endl;	
+	}
+
+	//a是栈内的空间不用delete删除
+	delete []p;
+	return 0;
+}*/
+
+
+///Demo2::
+#include <iostream>   
+using namespace std;
+//#define max(a,b) a>b?a:b;
+/*
+int max(int a,int b)
+{
+ return  a>b?a:b;
+}
+
+inline int max(int a,int b){
+ return  a>b?a:b;
+}
+
+int main(){
+ int k=max(32,33);
+ return 0;
+}
+
+////Demo3:::
+#include <iostream>   
+using namespace std;
+
+Struct STime
+{
+	int nHour;
+	int nMin;
+	int nSec;
+	void SetTime(int h,int m ,int s){
+		nHour = h;
+		nMin = m;
+		nSec = s;
+	}
+}
+
+int main()
+{
+ STime Morn,noon;
+Morn.setTime(9,60,51);
+noon.setTime(19,52,92);
+}
+
+
+////Demo4:::
+缺省函数
+
+#include<studio.h>
+
+int add (int a , int b=10,int c= 12){
+  return a+b+c;
+}
+
+int main()
+{
+ int k = add(12,15);
+add(4);
+add(7,24);
+add(21,213,25);
+}
 
 
 
+////Demo5::
+C++:
 
+void swap(int& i,int& j)
+{
+	int tmp=i;
+	i =j;
+	j=tmp;
+}
 
+void main()
+{
+	int i=10;
+	int j=20;
+	swap(i,j);
+}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+C:::
+void swap(int* i,int* j)
+{
+int tmp=*i;
+*i = *j;
+*j =tmp;
+}
+void main()
+{
+	int i=10;
+	int j=20;
+	swap(&i,&j);
+}
  
 
 
+Demo5：：
+#pragma once
+#include <iostream>
+using namespace std;
+typedef int DATA;
+struct SNode
+{
+	DATA data;
+	SNode* pNext;
+};
+
+class CList
+{
+	SNode* m_pHead;
+public:
+	 void AddHead(DATA data) {
+		 SNode* p = new SNode;
+		 p->data = data;
+		 p->pNext = m_pHead;
+		 m_pHead = p;
+	}
+	void AddTail(DATA data) {
+		SNode* pNew = new SNode;
+		pNew->data = data;
+		pNew->pNext = NULL;
+		if (!m_pHead) {
+			m_pHead = pNew;
+			return;
+		 }
+		SNode* p = m_pHead;
+			while (p->pNext != NULL) {
+				p = p->pNext;
+			}
+			p->pNext = pNew;
+	} 
+	int  GetCount() {
+		SNode* p = m_pHead;
+		int i = 0;
+		while (p) {
+			++i;
+			p = p->pNext;
+		}
+		return i;
+	}
+
+
+};
+
+int main() {
+	CList list; 
+	list.AddHead(2);
+	list.AddHead(32);
+	list.AddHead(24);
+	list.AddTail(53);
+}
