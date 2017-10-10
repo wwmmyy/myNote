@@ -587,3 +587,72 @@ int main() {
 	list.AddHead(24);
 	list.AddTail(53);
 }
+
+
+////////////////////////////////////////////////////
+
+#define  _CRT_SECURE_NO_WARNINGS
+
+#include <iostream>
+
+using namespace std;
+//1、申请1个普通变量 int *p = new int;  delete p;
+//2、申请数组 int *p = new int[10];  delete []p;
+//3、申请结构体对象：SData * p = new SData; delete p;
+//4、申请结构体数组：SData * p = new SData[20]; delete []p;
+//5、申请指针数组：SData* p[100] = { NULL }; delete[]p;
+struct SData
+{
+	int nNumb;
+	char sName[20];
+	float fMath;
+};
+int main()
+{
+	//int *p = new int(5);//初始化堆空间语句
+	int *p = new int[5];
+	p[0] = 32;
+	p[1] = 22;
+	p[2] = 54;	
+	p[4] = 22;
+	p[3] = 54;
+
+	int i = 0;
+	while (i < 5)
+		cout << p[i++] << endl;
+	delete []p;
+	
+	return 0;
+}
+/*
+SData * p = new SData;//0...19
+p->nNumb = 1032;
+strcpy(p->sName, "bbb");
+p->fMath = 85.5f;
+
+delete p;
+*/
+/*
+SData * p = new SData[20];//0...19
+p[0].nNumb = 1032;
+strcpy(p[0].sName, "bbb");
+p[0].fMath = 85.5f;
+
+delete []p;
+
+*/
+/*
+int a[10] = { 2,35,6,7,8,9,9 };
+int i = 0;
+//int *p = (int*)malloc(sizeof(int) * 10);
+int *p = new int[10];
+
+while (i < _countof(a))
+p[i] = a[i++];
+i = 0;
+while (i < _countof(a))
+cout << p[i++] << endl;
+
+delete []p;
+
+*/
